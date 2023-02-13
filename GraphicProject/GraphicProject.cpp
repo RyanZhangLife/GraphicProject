@@ -3,6 +3,7 @@
 
 #include "framework.h"
 #include "GraphicProject.h"
+#include "Canvas.h"
 
 #define MAX_LOADSTRING 100
 
@@ -10,12 +11,21 @@
 HINSTANCE hInst;                                // 当前实例
 WCHAR szTitle[MAX_LOADSTRING];                  // 标题栏文本
 WCHAR szWindowClass[MAX_LOADSTRING];            // 主窗口类名
+HWND hWnd;
+int wWidth{ 800 };
+int wHeight{ 600 };
+HDC hDC; // 显示器读取数据
+HDC hMem; // 显示数据缓存
+
+GT::Canvas* _canvas{ nullptr }; // 声明画布
 
 // 此代码模块中包含的函数的前向声明:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+
+void Render();
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -40,6 +50,33 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_GRAPHICPROJECT));
 
+    // 创建绘图用的位图
+    void* buffer{ 0 };
+    hDC = GetDC(hWnd); // hDC和hMem是显示器取数据的Mem
+    hMem = ::CreateCompatibleDC(hDC);
+
+    BITMAPINFO bmpInfo; // 产生位图的信息
+    bmpInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+    bmpInfo.bmiHeader.biWidth = wWidth ;
+    bmpInfo.bmiHeader.biHeight = wHeight;
+    bmpInfo.bmiHeader.biPlanes = 1;
+    bmpInfo.bmiHeader.biBitCount = 32;
+    bmpInfo.bmiHeader.biCompression = BI_RGB;
+    bmpInfo.bmiHeader.biSizeImage = 0;
+    bmpInfo.bmiHeader.biXPelsPerMeter = 0;
+    bmpInfo.bmiHeader.biYPelsPerMeter = 0;
+    bmpInfo.bmiHeader.biClrUsed = 0;
+    bmpInfo.bmiHeader.biClrImportant = 0;
+
+    // 创建Buffer内存
+    HBITMAP hBmp = CreateDIBSection(hDC, &bmpInfo, DIB_RGB_COLORS, (void**)&buffer, 0, 0);
+    SelectObject(hMem, hBmp);
+
+    memset(buffer, 0, wWidth * wHeight * 4); // 清空Buffer为0
+
+    // 初始化Canvas
+    _canvas = new GT::Canvas(wWidth, wHeight, buffer);
+
     MSG msg;
 
     // 主消息循环:
@@ -50,12 +87,34 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+        Render();
     }
 
     return (int) msg.wParam;
 }
 
+// 
+// 函数： Render()
+// 
+// 目标： 完成位图渲染
+//
+void Render()
+{
+    _canvas->clear();
+    GT::RGBA _color(255, 0, 0, 0);
 
+    for (int x{ 0 }; x < wWidth; ++x)
+    {
+        for (int y{ 0 }; y < wHeight; ++y)
+        {
+            GT::RGBA _color(rand() % 255, rand() % 255, rand() % 255);
+            _canvas->drawPoint(x, y, _color);
+        }
+    }
+
+    // 把位图画到设备上，hMem相当于缓冲区
+    BitBlt(hDC, 0, 0, wWidth, wHeight, hMem, 0, 0, SRCCOPY);
+}
 
 //
 //  函数: MyRegisterClass()
@@ -76,7 +135,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_GRAPHICPROJECT));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_GRAPHICPROJECT);
+    wcex.lpszMenuName   = nullptr;
     wcex.lpszClassName  = szWindowClass;
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
@@ -97,8 +156,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 将实例句柄存储在全局变量中
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+   hWnd = CreateWindowW(szWindowClass, szTitle, WS_POPUP,
+      CW_USEDEFAULT, 0, wWidth, wHeight, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
