@@ -101,8 +101,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 void Render()
 {
     _canvas->clear();
-    GT::RGBA _color(255, 0, 0, 0);
 
+    /* 
+    // 雪花点图程序
     for (int x{ 0 }; x < wWidth; ++x)
     {
         for (int y{ 0 }; y < wHeight; ++y)
@@ -110,9 +111,12 @@ void Render()
             GT::RGBA _color(rand() % 255, rand() % 255, rand() % 255);
             _canvas->drawPoint(x, y, _color);
         }
-    }
-
-    // 把位图画到设备上，hMem相当于缓冲区
+    }*/
+    
+    // brensenham画线程序
+    _canvas->drawLine(GT::intV2(159, 180), GT::intV2(100, 100), GT::RGBA(255, 0, 0));
+    
+    // 把位图画到设备上
     BitBlt(hDC, 0, 0, wWidth, wHeight, hMem, 0, 0, SRCCOPY);
 }
 

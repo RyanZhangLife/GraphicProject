@@ -63,6 +63,9 @@ namespace GT
 			}
 			m_buffer[y * m_width + x] = _color;
 		}
+
+		// Brensenhamª≠œﬂÀ„∑®
+		void drawLine(intV2 pt1, intV2 pt2, RGBA _color);
 	};
 }
 
