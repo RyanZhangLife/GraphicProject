@@ -113,8 +113,10 @@ void Render()
         }
     }*/
     
-    // brensenham画线程序
-    _canvas->drawLine(GT::intV2(159, 180), GT::intV2(100, 100), GT::RGBA(255, 0, 0));
+    // brensenham画线程序,加上ColorLerp插值
+    /*GT::Point pt1(100, 100, GT::RGBA(255,0,0,0));
+    GT::Point pt2(500, 500, GT::RGBA(0, 0, 255,0));
+    _canvas->drawLine(pt1, pt2);*/
     
     // 把位图画到设备上
     BitBlt(hDC, 0, 0, wWidth, wHeight, hMem, 0, 0, SRCCOPY);

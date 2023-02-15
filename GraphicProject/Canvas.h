@@ -22,6 +22,25 @@ namespace GT
 			m_a = _a;
 		}
 	};
+
+	class Point
+	{
+	public:
+		int m_x;
+		int m_y;
+		RGBA m_color;
+		Point(int _x, int _y, RGBA _color)
+		{
+			m_x = _x;
+			m_y = _y;
+			m_color = _color;
+		}
+		~Point()
+		{
+
+		}
+	};
+
 	class Canvas
 	{
 	private:
@@ -64,8 +83,22 @@ namespace GT
 			m_buffer[y * m_width + x] = _color;
 		}
 
+		// 颜色的插值计算
+		inline RGBA colorLerp(RGBA _color1, RGBA _color2, float _scale)
+		{
+			RGBA _color;
+			_color.m_r = _color1.m_r + (float)(_color2.m_r - _color1.m_r) * _scale;
+			_color.m_g = _color1.m_g + (float)(_color2.m_g - _color1.m_g) * _scale;
+			_color.m_b = _color1.m_b + (float)(_color2.m_b - _color1.m_b) * _scale;
+			_color.m_a = _color1.m_a + (float)(_color2.m_a - _color1.m_a) * _scale;
+			return _color;
+		}
+
 		// Brensenham画线算法
-		void drawLine(intV2 pt1, intV2 pt2, RGBA _color);
+		void drawLine(Point pt1, Point pt2);
+
+		// 绘制三角形算法
+		void drawTriangle(Point pt1, Point pt2, Point pt3);
 	};
 }
 
