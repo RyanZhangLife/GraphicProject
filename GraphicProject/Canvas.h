@@ -97,7 +97,12 @@ namespace GT
 		// Brensenham画线算法
 		void drawLine(Point pt1, Point pt2);
 
-		// 绘制三角形算法
+		// 扫描线绘制三角形算法
+		void scaningDrawTriangle(Point pt1, Point pt2, Point pt3);
+
+		void drawTriangleFlat(Point ptFlat1, Point ptFlat2, Point pt);
+
+		// 通用三角形绘制算法
 		void drawTriangle(Point pt1, Point pt2, Point pt3);
 	};
 }
