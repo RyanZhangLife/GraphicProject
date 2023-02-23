@@ -1,6 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include "GTMATH.hpp"
+#include <vector>
 
 namespace GT
 {
@@ -104,6 +105,12 @@ namespace GT
 
 		// 通用三角形绘制算法
 		void drawTriangle(Point pt1, Point pt2, Point pt3);
+
+		// 判断点是否在长方体范围内
+		bool judgeInRect(Point pt, GT_RECT _rect);
+
+		// 判断点是否在三角形内
+		bool judgeInTriangle(Point pt, std::vector<Point> _ptArray);
 	};
 }
 
