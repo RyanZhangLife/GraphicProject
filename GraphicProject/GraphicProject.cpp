@@ -118,9 +118,9 @@ void Render()
     GT::Point pt2(500, 500, GT::RGBA(0, 0, 255,0));
     _canvas->drawLine(pt1, pt2);*/
 
-    GT::Point pt1(200, 200, GT::RGBA(255, 0, 0));
-    GT::Point pt2(-10, -20, GT::RGBA(255, 0, 0));
-    GT::Point pt3(-50, -20, GT::RGBA(255, 0, 0));
+    GT::Point pt1(-100, -150, GT::RGBA(255, 0, 0));
+    GT::Point pt2(500, 50, GT::RGBA(0, 255, 0));
+    GT::Point pt3(250, 500, GT::RGBA(0, 0, 255));
 
     _canvas->drawTriangle(pt1, pt2, pt3);
     
