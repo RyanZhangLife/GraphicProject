@@ -4,6 +4,7 @@
 #include "framework.h"
 #include "GraphicProject.h"
 #include "Canvas.h"
+#include "Image.h"
 
 #define MAX_LOADSTRING 100
 
@@ -18,6 +19,7 @@ HDC hDC; // 显示器读取数据
 HDC hMem; // 显示数据缓存
 
 GT::Canvas* _canvas{ nullptr }; // 声明画布
+GT::Image* _image{ nullptr }; // 声明图片
 
 // 此代码模块中包含的函数的前向声明:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -76,6 +78,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // 初始化Canvas
     _canvas = new GT::Canvas(wWidth, wHeight, buffer);
+    _image = GT::Image::readFromFile("res/sun.jpg");
 
     MSG msg;
 
@@ -102,27 +105,7 @@ void Render()
 {
     _canvas->clear();
 
-    /* 
-    // 雪花点图程序
-    for (int x{ 0 }; x < wWidth; ++x)
-    {
-        for (int y{ 0 }; y < wHeight; ++y)
-        {
-            GT::RGBA _color(rand() % 255, rand() % 255, rand() % 255);
-            _canvas->drawPoint(x, y, _color);
-        }
-    }*/
-    
-    // brensenham画线程序,加上ColorLerp插值
-    /*GT::Point pt1(100, 100, GT::RGBA(255,0,0,0));
-    GT::Point pt2(500, 500, GT::RGBA(0, 0, 255,0));
-    _canvas->drawLine(pt1, pt2);*/
-
-    GT::Point pt1(-100, -150, GT::RGBA(255, 0, 0));
-    GT::Point pt2(500, 50, GT::RGBA(0, 255, 0));
-    GT::Point pt3(250, 500, GT::RGBA(0, 0, 255));
-
-    _canvas->drawTriangle(pt1, pt2, pt3);
+    _canvas->drawImage(100, 100, _image);
     
     // 把位图画到设备上
     BitBlt(hDC, 0, 0, wWidth, wHeight, hMem, 0, 0, SRCCOPY);

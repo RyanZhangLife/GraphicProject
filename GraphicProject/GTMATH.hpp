@@ -56,4 +56,24 @@ namespace GT {
 			m_top = _top;
 		}
 	};
+
+
+	struct RGBA
+	{
+		byte m_b;
+		byte m_g;
+		byte m_r;
+		byte m_a;
+
+		RGBA(byte _r = 255,
+			byte _g = 255,
+			byte _b = 255,
+			byte _a = 255)
+		{
+			m_r = _r;
+			m_g = _g;
+			m_b = _b;
+			m_a = _a;
+		}
+	};
 }

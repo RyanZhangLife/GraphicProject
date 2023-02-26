@@ -349,4 +349,15 @@ namespace GT
 		}
 		return false;
 	}
+	void Canvas::drawImage(int _x, int _y, Image* _image) 
+	{
+		for (int u = 0; u < _image->getWidth() ; ++u)
+		{
+			for (int v = 0; v < _image->getHeight(); ++v)
+			{
+				RGBA _color = _image->getColor(u, v);
+				drawPoint(_x + u, _y + v, _color);
+			}
+		}
+	}
 }

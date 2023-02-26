@@ -2,28 +2,10 @@
 #include <Windows.h>
 #include "GTMATH.hpp"
 #include <vector>
+#include "Image.h"
 
 namespace GT
 {
-	struct RGBA
-	{
-		byte m_b;
-		byte m_g;
-		byte m_r;
-		byte m_a;
-
-		RGBA(byte _r = 255,
-			byte _g = 255, 
-			byte _b = 255, 
-			byte _a = 255)
-		{
-			m_r = _r;
-			m_g = _g;
-			m_b = _b;
-			m_a = _a;
-		}
-	};
-
 	class Point
 	{
 	public:
@@ -97,20 +79,18 @@ namespace GT
 
 		// Brensenham画线算法
 		void drawLine(Point pt1, Point pt2);
-
 		// 扫描线绘制三角形算法
 		void scaningDrawTriangle(Point pt1, Point pt2, Point pt3);
-
 		void drawTriangleFlat(Point ptFlat1, Point ptFlat2, Point pt);
-
 		// 通用三角形绘制算法
 		void drawTriangle(Point pt1, Point pt2, Point pt3);
-
 		// 判断点是否在长方体范围内
 		bool judgeInRect(Point pt, GT_RECT _rect);
-
 		// 判断点是否在三角形内
 		bool judgeInTriangle(Point pt, std::vector<Point> _ptArray);
+
+		// 图片操作
+		void drawImage(int _x, int _y, Image* _image);
 	};
 }
 
