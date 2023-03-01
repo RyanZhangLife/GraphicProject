@@ -24,7 +24,7 @@ namespace GT
 			return m_height;
 		}
 
-		RGBA getColor(int x, int y)
+		RGBA getColor(int x, int y)const
 		{
 			if (x<0 || x>m_width - 1 || y<0 || y>m_height - 1)
 			{
@@ -59,6 +59,8 @@ namespace GT
 		}
 	public:
 		static Image* readFromFile(const char* _fileName);
+		// 简单插值算法缩放图片
+		static Image* zoomImage(const Image* _image, float _zoomX, float _zoomY);
 	};
 }
 
