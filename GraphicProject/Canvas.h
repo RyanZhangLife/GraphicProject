@@ -31,6 +31,8 @@ namespace GT
 		int m_height;
 		RGBA* m_buffer;
 
+		byte m_alphaLimit; // Canvas的透明度最小值
+
 	public:
 		Canvas(int _width, int _height, void* _buffer) 
 		{
@@ -91,6 +93,7 @@ namespace GT
 
 		// 图片操作
 		void drawImage(int _x, int _y, Image* _image);
+		void setAlphaLimit(byte _limit);
 	};
 }
 

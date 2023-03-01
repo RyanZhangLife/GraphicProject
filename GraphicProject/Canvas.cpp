@@ -356,8 +356,16 @@ namespace GT
 			for (int v = 0; v < _image->getHeight(); ++v)
 			{
 				RGBA _color = _image->getColor(u, v);
-				drawPoint(_x + u, _y + v, _color);
+				if (_color.m_a > m_alphaLimit)
+				{
+					drawPoint(_x + u, _y + v, _color);
+				}
 			}
 		}
+	}
+	// 设置Canvas Alpha最小值
+	void Canvas::setAlphaLimit(byte _limit)
+	{
+		m_alphaLimit = _limit;
 	}
 }

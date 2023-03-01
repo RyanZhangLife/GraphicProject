@@ -78,7 +78,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // 初始化Canvas
     _canvas = new GT::Canvas(wWidth, wHeight, buffer);
-    _image = GT::Image::readFromFile("res/sun.jpg");
+    _image = GT::Image::readFromFile("res/carma.png");
 
     MSG msg;
 
@@ -104,7 +104,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 void Render()
 {
     _canvas->clear();
-
+    _canvas->setAlphaLimit(10); // 图像最小Alpha透明度
     _canvas->drawImage(100, 100, _image);
     
     // 把位图画到设备上

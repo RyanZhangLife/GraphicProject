@@ -13,12 +13,12 @@ namespace GT
 		stbi_set_flip_vertically_on_load(true);
 		unsigned char* bits = stbi_load(_fileName, &_width, &_height, &_picType, STBI_rgb_alpha);
 		
-		/*for (int i = 0; i < _width * _height * 4; i+=4)
+		for (int i = 0; i < _width * _height * 4; i+=4)
 		{
 			byte tmp = bits[i];
 			bits[i] = bits[i + 2];
 			bits[i + 2] = tmp;
-		}*/
+		}
 		
 		Image* _image = new Image(_width, _height, bits);
 		// ÊÍ·Åbits
