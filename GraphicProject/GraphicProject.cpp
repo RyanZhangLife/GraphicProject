@@ -20,6 +20,7 @@ HDC hMem; // 显示数据缓存
 
 GT::Canvas* _canvas{ nullptr }; // 声明画布
 GT::Image* _image{ nullptr }; // 声明图片
+GT::Image* _bkImage{ nullptr }; // 背景图片
 
 // 此代码模块中包含的函数的前向声明:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -79,6 +80,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     // 初始化Canvas
     _canvas = new GT::Canvas(wWidth, wHeight, buffer);
     _image = GT::Image::readFromFile("res/carma.png");
+    _image -> setAlpha(0.5);
+    _bkImage = GT::Image::readFromFile("res/bk.jpg");
 
     MSG msg;
 
@@ -104,6 +107,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 void Render()
 {
     _canvas->clear();
+
+    _canvas->drawImage(100, 100, _bkImage);
     _canvas->setBlend(true);
     _canvas->drawImage(100, 100, _image);
     

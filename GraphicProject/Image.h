@@ -11,6 +11,7 @@ namespace GT
 		int m_width;
 		int m_height;
 		RGBA* m_data;
+		float m_alpha;
 
 	public:
 		int getWidth()const
@@ -31,11 +32,21 @@ namespace GT
 			}
 			return m_data[y * m_width + x];
 		}
+		inline void setAlpha(float _alpha)
+		{
+			m_alpha = _alpha;
+		}
+
+		inline float getAlpha()
+		{
+			return m_alpha;
+		}
 
 		Image(int _width = 0, int _height = 0, byte* _data = nullptr)
 		{
 			m_width = _width;
 			m_height = _height;
+			m_alpha = 1.0;
 			if (_data)
 			{
 				m_data = new RGBA[m_width * m_height];

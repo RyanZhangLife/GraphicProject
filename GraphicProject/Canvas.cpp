@@ -363,7 +363,8 @@ namespace GT
 				else
 				{
 					RGBA _dstColor = getColor(_x + u, _y + v);
-					RGBA _finalColor = colorLerp(_dstColor, _srcColor, (float)_srcColor.m_a / 255.0);
+					float _srcAlpha = (float)_srcColor.m_a / 255.0;
+					RGBA _finalColor = colorLerp(_dstColor, _srcColor, _image->getAlpha()*_srcAlpha);
 					drawPoint(_x + u, _y + v, _finalColor);
 				}
 			}
