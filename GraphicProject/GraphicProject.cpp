@@ -104,7 +104,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 void Render()
 {
     _canvas->clear();
-    _canvas->setAlphaLimit(10); // 图像最小Alpha透明度
+    _canvas->setBlend(true);
     _canvas->drawImage(100, 100, _image);
     
     // 把位图画到设备上

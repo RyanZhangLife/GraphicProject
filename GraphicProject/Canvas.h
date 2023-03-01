@@ -32,6 +32,7 @@ namespace GT
 		RGBA* m_buffer;
 
 		byte m_alphaLimit; // Canvas的透明度最小值
+		bool m_useBlend; // 是否开启Alpha混合
 
 	public:
 		Canvas(int _width, int _height, void* _buffer) 
@@ -44,6 +45,7 @@ namespace GT
 			m_width = _width;
 			m_height = _height;
 			m_buffer = (RGBA*)_buffer;
+			m_useBlend = false;
 		}
 		~Canvas() 
 		{
@@ -66,6 +68,15 @@ namespace GT
 				return;
 			}
 			m_buffer[y * m_width + x] = _color;
+		}
+
+		// 获取点上对应的颜色
+		RGBA getColor(int x, int y)
+		{
+			if (x < 0 || x > m_width || y < 0 || y > m_height) {
+				return RGBA(0, 0, 0);
+			}
+			return m_buffer[y * m_width + x];
 		}
 
 		// 颜色的插值计算
@@ -94,6 +105,7 @@ namespace GT
 		// 图片操作
 		void drawImage(int _x, int _y, Image* _image);
 		void setAlphaLimit(byte _limit);
+		void setBlend(bool _useBlend);
 	};
 }
 

@@ -355,10 +355,16 @@ namespace GT
 		{
 			for (int v = 0; v < _image->getHeight(); ++v)
 			{
-				RGBA _color = _image->getColor(u, v);
-				if (_color.m_a > m_alphaLimit)
+				RGBA _srcColor = _image->getColor(u, v);
+				if (!m_useBlend)
 				{
-					drawPoint(_x + u, _y + v, _color);
+					drawPoint(_x + u, _y + v, _srcColor);
+				}
+				else
+				{
+					RGBA _dstColor = getColor(_x + u, _y + v);
+					RGBA _finalColor = colorLerp(_dstColor, _srcColor, (float)_srcColor.m_a / 255.0);
+					drawPoint(_x + u, _y + v, _finalColor);
 				}
 			}
 		}
@@ -367,5 +373,10 @@ namespace GT
 	void Canvas::setAlphaLimit(byte _limit)
 	{
 		m_alphaLimit = _limit;
+	}
+	// ¿ªÆôAlpha»ìºÏ
+	void Canvas::setBlend(bool _useBlend)
+	{
+		m_useBlend = _useBlend;
 	}
 }
