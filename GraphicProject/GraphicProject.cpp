@@ -13,8 +13,8 @@ HINSTANCE hInst;                                // 当前实例
 WCHAR szTitle[MAX_LOADSTRING];                  // 标题栏文本
 WCHAR szWindowClass[MAX_LOADSTRING];            // 主窗口类名
 HWND hWnd;
-int wWidth{ 800 };
-int wHeight{ 600 };
+int wWidth{ 1200 };
+int wHeight{ 900 };
 HDC hDC; // 显示器读取数据
 HDC hMem; // 显示数据缓存
 
@@ -109,10 +109,19 @@ void Render()
 {
     _canvas->clear();
 
-    _canvas->drawImage(100, 100, _bkImage);
+    /*_canvas->drawImage(100, 100, _bkImage);
     _canvas->setBlend(true);
-    _canvas->drawImage(100, 100, _zoomImage);
-    
+    _canvas->drawImage(100, 100, _zoomImage);*/
+
+    GT::Point ptArray[] = {
+        {   0,       0,       GT::RGBA(255,0,0),  GT::floatV2(    0,      0)},
+        {   500,     0,     GT::RGBA(255,0,0),  GT::floatV2(    1.0,    0)},
+        {   250,   300,     GT::RGBA(255,0,0),  GT::floatV2(    0.5,    1.0)},
+    };
+    _canvas->enableTexture(true);
+    _canvas->bindTexture(_bkImage);
+    _canvas->drawTriangle(ptArray[0], ptArray[1], ptArray[2]);
+
     // 把位图画到设备上
     BitBlt(hDC, 0, 0, wWidth, wHeight, hMem, 0, 0, SRCCOPY);
 }
@@ -157,7 +166,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 将实例句柄存储在全局变量中
 
-   hWnd = CreateWindowW(szWindowClass, szTitle, WS_POPUP,
+   hWnd = CreateWindowW(szWindowClass, szTitle, WS_BORDER,
       CW_USEDEFAULT, 0, wWidth, wHeight, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)

@@ -6,17 +6,19 @@
 
 namespace GT
 {
-	class Point
+	struct Point
 	{
 	public:
 		int m_x;
 		int m_y;
 		RGBA m_color;
-		Point(int _x, int _y, RGBA _color)
+		floatV2 m_uv; // 图片的uv纹理坐标
+		Point(int _x = 0, int _y = 0, RGBA _color = RGBA(0, 0, 0, 0), floatV2 _uv = floatV2(0.0, 0.0))
 		{
 			m_x = _x;
 			m_y = _y;
 			m_color = _color;
+			m_uv = _uv;
 		}
 		~Point()
 		{
@@ -33,7 +35,8 @@ namespace GT
 
 		byte m_alphaLimit; // Canvas的透明度最小值
 		bool m_useBlend; // 是否开启Alpha混合
-
+		bool m_enableTexture; // 是否启用纹理贴图
+		const Image* m_texture; // 纹理贴图的图片
 	public:
 		Canvas(int _width, int _height, void* _buffer) 
 		{
@@ -46,6 +49,7 @@ namespace GT
 			m_height = _height;
 			m_buffer = (RGBA*)_buffer;
 			m_useBlend = false;
+			m_enableTexture = false;
 		}
 		~Canvas() 
 		{
@@ -90,6 +94,7 @@ namespace GT
 			return _color;
 		}
 
+		floatV2 uvLerp(floatV2 _uv1, floatV2 _uv2, float _scale);
 		// Brensenham画线算法
 		void drawLine(Point pt1, Point pt2);
 		// 扫描线绘制三角形算法
@@ -105,7 +110,11 @@ namespace GT
 		// 图片操作
 		void drawImage(int _x, int _y, Image* _image);
 		void setAlphaLimit(byte _limit);
+
+
 		void setBlend(bool _useBlend);
+		void enableTexture(bool _enable);
+		void bindTexture(const Image* _image);
 	};
 }
 

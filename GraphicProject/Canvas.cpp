@@ -48,10 +48,9 @@ namespace GT
 
 		//初始化
 		int p = 2 * disY - disX;
-
+		RGBA _color;
 		for (int i{ 0 }; i < sumStep; ++i)
 		{
-			RGBA _color;
 			float _scale = 0;
 			if (useXStep)
 			{
@@ -60,7 +59,22 @@ namespace GT
 			{
 				_scale = (float)(yNow - pt1.m_y) / (float)(pt2.m_y - pt1.m_y);
 			}
-			_color = colorLerp(pt1.m_color, pt2.m_color, _scale);
+			if (m_enableTexture)
+			{
+				floatV2 _uv = uvLerp(pt1.m_uv, pt2.m_uv, _scale);
+				if (m_texture)
+				{
+					_color = m_texture->getColorByUV(_uv.x, _uv.y);
+				}
+				else
+				{
+					_color = colorLerp(pt1.m_color, pt2.m_color, _scale);
+				}
+			}
+			else
+			{
+				_color = colorLerp(pt1.m_color, pt2.m_color, _scale);
+			}
 			drawPoint(xNow, yNow, _color);
 			// 步进辅助坐标
 			if (p >= 0)
@@ -155,6 +169,11 @@ namespace GT
 		RGBA colorEnd1;
 		RGBA colorEnd2;
 
+		floatV2 uvStart1;
+		floatV2 uvStart2;
+		floatV2 uvEnd1;
+		floatV2 uvEnd2;
+
 		if (pt.m_y < ptFlat1.m_y)
 		{
 			yStart = pt.m_y;
@@ -164,6 +183,11 @@ namespace GT
 			colorEnd1 = ptFlat1.m_color;
 			colorStart2 = pt.m_color;
 			colorEnd2 = ptFlat2.m_color;
+
+			uvStart1 = pt.m_uv;
+			uvEnd1 = ptFlat1.m_uv;
+			uvStart2 = pt.m_uv;
+			uvEnd2 = ptFlat2.m_uv;
 		}
 		else 
 		{
@@ -174,6 +198,11 @@ namespace GT
 			colorEnd1 = pt.m_color;
 			colorStart2 = ptFlat2.m_color;
 			colorEnd2 = pt.m_color;
+
+			uvStart1 = ptFlat1.m_uv;
+			uvStart2 = ptFlat2.m_uv;
+			uvEnd1 = pt.m_uv;
+			uvEnd2 = pt.m_uv;
 		}
 		float yColorStep = 1.0 / (float)(yEnd - yStart);
 		int yColorStart = yStart;
@@ -233,10 +262,21 @@ namespace GT
 			RGBA _color1 = colorLerp(colorStart1, colorEnd1, s);
 			RGBA _color2 = colorLerp(colorStart2, colorEnd2, s);
 
-			Point pt1(x1, y, _color1);
-			Point pt2(x2, y, _color2);
+			floatV2 _uv1 = uvLerp(uvStart1, uvEnd1, s);
+			floatV2 _uv2 = uvLerp(uvStart2, uvEnd2, s);
+
+			Point pt1(x1, y, _color1, _uv1);
+			Point pt2(x2, y, _color2, _uv2);
 			drawLine(pt1, pt2);
 		}
+	}
+
+	floatV2 Canvas::uvLerp(floatV2 _uv1, floatV2 _uv2, float _scale)
+	{
+		floatV2 _uv;
+		_uv.x = _uv1.x + (_uv2.x - _uv1.x) * _scale;
+		_uv.y = _uv1.y + (_uv2.y - _uv1.y) * _scale;
+		return _uv;
 	}
 
 	// 通用三角形绘制算法
@@ -302,7 +342,7 @@ namespace GT
 
 		float s = (float)(npt.m_y - ptMin.m_y) / (float)(ptMax.m_y - ptMin.m_y);
 		npt.m_color = colorLerp(ptMin.m_color, ptMax.m_color, s);
-
+		npt.m_uv = uvLerp(ptMin.m_uv, ptMax.m_uv, s);
 
 		drawTriangleFlat(ptMid, npt, ptMax);
 		drawTriangleFlat(ptMid, npt, ptMin);
@@ -379,5 +419,15 @@ namespace GT
 	void Canvas::setBlend(bool _useBlend)
 	{
 		m_useBlend = _useBlend;
+	}
+	// 开启纹理贴图
+	void Canvas::enableTexture(bool _enable)
+	{
+		m_enableTexture = _enable;
+	}
+	//绑定纹理贴图
+	void Canvas::bindTexture(const Image* _image)
+	{
+		m_texture = _image;
 	}
 }

@@ -32,6 +32,14 @@ namespace GT
 			}
 			return m_data[y * m_width + x];
 		}
+
+		RGBA getColorByUV(float _u, float _v)const
+		{
+			int x = (float)m_width * _u;
+			int y = (float)m_height * _v;
+			return m_data[y * m_width + x];
+		}
+
 		inline void setAlpha(float _alpha)
 		{
 			m_alpha = _alpha;
