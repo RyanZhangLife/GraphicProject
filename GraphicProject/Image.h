@@ -60,6 +60,7 @@ namespace GT
 	public:
 		static Image* readFromFile(const char* _fileName);
 		// 简单插值算法缩放图片
+		static Image* zoomImageSimple(const Image* _image, float _zoomX, float _zoomY);
 		static Image* zoomImage(const Image* _image, float _zoomX, float _zoomY);
 	};
 }

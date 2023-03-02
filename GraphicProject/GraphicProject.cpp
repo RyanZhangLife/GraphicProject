@@ -81,7 +81,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     // 初始化Canvas
     _canvas = new GT::Canvas(wWidth, wHeight, buffer);
     _image = GT::Image::readFromFile("res/carma.png");
-    _zoomImage = GT::Image::zoomImage(_image, 0.5, 0.5);
+    _zoomImage = GT::Image::zoomImage(_image, 2, 2);
     _bkImage = GT::Image::readFromFile("res/bk.jpg");
 
     MSG msg;
@@ -111,7 +111,7 @@ void Render()
 
     _canvas->drawImage(100, 100, _bkImage);
     _canvas->setBlend(true);
-    _canvas->drawImage(100, 100, _image);
+    _canvas->drawImage(100, 100, _zoomImage);
     
     // 把位图画到设备上
     BitBlt(hDC, 0, 0, wWidth, wHeight, hMem, 0, 0, SRCCOPY);
