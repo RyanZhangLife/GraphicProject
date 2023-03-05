@@ -116,7 +116,7 @@ void Render()
     GT::Point ptArray[] = {
         {   0,       0,       GT::RGBA(255,0,0),  GT::floatV2(    0,      0)},
         {   500,     0,     GT::RGBA(255,0,0),  GT::floatV2(    1.0,    0)},
-        {   250,   300,     GT::RGBA(255,0,0),  GT::floatV2(    0.5,    1.0)},
+        {   500,   300,     GT::RGBA(255,0,0),  GT::floatV2(    1.0,    1.0)},
     };
     _canvas->enableTexture(true);
     _canvas->bindTexture(_bkImage);
